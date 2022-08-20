@@ -1,0 +1,9 @@
+---
+- name: check_kernel_version
+  shell: 'uname -a '
+  register: result_kernel
+
+- name: kernel_version
+  debug:
+    msg: "{{ result_kernel.stdout_lines }}"
+

@@ -1,0 +1,67 @@
+---
+- name: check dmesg for  error warn fail
+  shell: dmesg |grep -i "error\|warn\|fail"
+  register: result_dmesg
+  no_log: True
+  ignore_errors: true
+
+- name: dmesg result error warn fail
+  debug:
+    msg: "{{ result_dmesg.stdout_lines }}"
+  ignore_errors: true
+
+- name: check free space at boot and "/"
+  shell: 'df -h |grep "boot\|/$"'
+  register: result_space
+
+- name: free space at boot and "/"
+  debug:
+    msg: "{{ rresult_space.stdout_lines }}"
+
+- name: check_if_cluster_RHEL/OEL_6
+  shell: KERNEL_NEW=$(/sbin/service rgmanager status); KERNEL_NOW=$(echo "rgmanager:" "unrecognized service");  if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "host is in cluster"; else echo "without cluster"; fi 
+  when: (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '6') or (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6') or (ansible_distribution == 'OracleLinux' and ansible_distribution_major_version == '6')
+  register: cluster_state
+  
+- name: cluster_state_RHEL/OEL_6
+  shell: /usr/sbin/clustat
+  ignore_errors: true
+  when: cluster_state.stdout == "host is in cluster" 
+  no_log: True
+  register: clustat
+
+- name: result_of_clustat_RHEL/OEL_6
+  debug:
+    msg: "{{ clustat.stdout_lines }}"
+  ignore_errors: true
+
+- name: cluster_state_RHEL7/8
+  shell: KERNEL_NEW=$("/bin/systemctl status pcsd.service"); KERNEL_NOW=$(echo "Unit pcsd.service could not be found.");  if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "host is in cluster"; else echo "without cluster"; fi
+  when: (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '7') or (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '8') or (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7') or (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '8') or (ansible_distribution == 'OracleLinux' and ansible_distribution_major_version == '7')
+  register: cluster_state_RHEL7
+
+- name: clustat_RHEL7
+  shell:  /usr/sbin/pcs
+  ignore_errors: true
+  when: cluster_state_RHEL7.stdout == "host is in cluster"
+  no_log: True
+  register: clustat_RHEL7
+
+- name: clustat_RHEL7
+  debug:
+    msg: "{{ clustat_RHEL7.stdout_lines }}"
+  ignore_errors: true
+
+- name: switch off proxy in yum.conf
+  lineinfile:
+    dest: /etc/yum.conf
+    regexp: "^proxy"
+    state: absent
+
+- name: check subscription
+  shell: KERNEL_NEW=$(grep jarvis /etc/yum.repos.d/* |awk '{print $3}' | tail -n 1 |awk -F "/" '{print $3}'); KERNEL_NOW=pandora.sdab.sn; if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "resubscription needed"; else echo "subscription is correct"; fi 
+  register: sub_needed
+  
+ #- import_tasks: task_subscription_update_test.yml
+- import_tasks: subscription_update_prod.yaml
+  when: sub_needed.stdout == "resubscription needed" 
