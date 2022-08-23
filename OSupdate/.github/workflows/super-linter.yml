@@ -10,11 +10,8 @@ name: Lint Code Base
 # Start the job on all push #
 on:
   push:
-    branches-ignore: [develop, main]
-    # Remove the line above to run when pushing to master
-  pull_request:
-    branches: [main]
-
+    branches: [main, develop]
+    
 # Set the Job #
 jobs:
   build:
