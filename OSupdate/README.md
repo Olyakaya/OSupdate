@@ -1,6 +1,4 @@
-[![GitHub Super-Linter](https://github.com/Olyakaya/OSupdate/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
-
-renemaed
+[![GitHub Super-Linter](https://github.com/Olyakaya/OSupdate/tree/main/OSupdate/.github/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
 
 Role Name
