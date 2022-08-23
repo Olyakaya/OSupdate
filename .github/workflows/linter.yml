@@ -11,12 +11,14 @@ name: Lint Code Base
 on:
   push:
     branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
     
 # Set the Job #
 jobs:
   build:
     # Name the Job
-    name: Lint
+    name: Lint Code Base
     # Set the agent to run on
     runs-on: ubuntu-latest
 
