@@ -1,4 +1,3 @@
-# tasks file for OSupdate
 ---
 - import_tasks: preupdateOS_prod.yaml
   tags:
