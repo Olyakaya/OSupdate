@@ -1,7 +1,8 @@
+---
 - name: virt or hard
   shell: '/usr/sbin/dmidecode  |grep -i prod '
   register: result
 
 - name: messages error result
-     debug:
+  debug:
     msg: "{{ result.stdout_lines }}"
