@@ -3,5 +3,5 @@
   register: result
 
 - name: messages error result
-  debug:
+     debug:
     msg: "{{ result.stdout_lines }}"
