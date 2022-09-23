@@ -19,7 +19,7 @@
     msg: "{{ result_space.stdout_lines }}"
 
 - name: kill any yum processes
-  shell: for i in ps -aux |grep ntpd |grep -v "grep" |awk '{print $2}'; do kill -9 $i; done
+  shell: for i in `ps -aux |grep ntpd |grep -v "grep" |awk '{print $2}'`; do kill -9 $i; done
      
 #- name: check_if_cluster_RHEL/OEL_6
 #  shell: KERNEL_NEW=$(/sbin/service rgmanager status); KERNEL_NOW=$(echo "rgmanager:" "unrecognized service");  if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "host is in cluster"; else echo "without cluster"; fi 
