@@ -1,6 +1,6 @@
 ---
 - hosts: frontend
   become: yes
-  gather_facts: no
+  gather_facts: yes
   roles:
-    - role: OSupdate
+    - role: OSUPDATE
