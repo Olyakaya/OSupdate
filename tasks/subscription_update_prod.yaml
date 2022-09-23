@@ -17,18 +17,20 @@
     regexp: '^enabled*'
     line: 'enabled=0'
 
-- name: remove katello-ca-consumer-bulgaria packages
+- name: remove katello-ca-consumer-jarvis packages
   yum:
     name: katello-ca-consumer-bulgaria*
     state: absent
 
-- name: Install katello-ca-consumer-latest
-  shell: 'yum localinstall http://jarvis.sdab.sn/pub/katello-ca-consumer-latest.noarch.rpm -y' 
+- name: Download katello-ca-consumer-latest
+  shell: 'curl https://pandora.sdab.sn/pub/katello-ca-consumer-latest.noarch.rpm -o katello-ca-consumer-latest.noarch.rpm -ks' 
 
-- name: register in jarvis RHEL6
-  shell: 'subscription-manager register --org="lifecell" --activationkey="rhel6-prod" --force'
-  ignore_errors: true
-  when: ansible_distribution == 'RedHat' and ansible_distribution_major_version == '6'
+- name: Update katello-ca-consumer
+  shell: "rpm -Uvh ./katello-ca-consumer-latest.noarch.rpm "
+#- name: register in jarvis RHEL6
+#  shell: 'subscription-manager register --org="lifecell" --activationkey="rhel6-prod" --force'
+#  ignore_errors: true
+#  when: ansible_distribution == 'RedHat' and ansible_distribution_major_version == '6'
 
 - name: register in jarvis RHEL7
   shell: 'subscription-manager register --org="lifecell" --activationkey="rhel7-prod" --force'
@@ -45,10 +47,10 @@
   ignore_errors: true
   when: ansible_distribution == 'OracleLinux' and ansible_distribution_major_version == '7'
 
-- name: register in jarvis OEL6
-  shell: 'subscription-manager register --org="lifecell" --activationkey="oel6-prod" --force'
+- name: register in jarvis OEL8
+  shell: 'subscription-manager register --org="lifecell" --activationkey="oel8-prod" --force'
   ignore_errors: true
-  when: ansible_distribution == 'OracleLinux' and ansible_distribution_major_version == '6'
+  when: ansible_distribution == 'OracleLinux' and ansible_distribution_major_version == '8'
 
 - name: "rm -f /etc/pki/product-default/69.pem"
   shell: rm -f /etc/pki/product-default/69.pem

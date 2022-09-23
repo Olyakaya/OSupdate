@@ -18,22 +18,22 @@
   debug:
     msg: "{{ rresult_space.stdout_lines }}"
 
-- name: check_if_cluster_RHEL/OEL_6
-  shell: KERNEL_NEW=$(/sbin/service rgmanager status); KERNEL_NOW=$(echo "rgmanager:" "unrecognized service");  if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "host is in cluster"; else echo "without cluster"; fi 
-  when: (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '6') or (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6') or (ansible_distribution == 'OracleLinux' and ansible_distribution_major_version == '6')
-  register: cluster_state
+#- name: check_if_cluster_RHEL/OEL_6
+#  shell: KERNEL_NEW=$(/sbin/service rgmanager status); KERNEL_NOW=$(echo "rgmanager:" "unrecognized service");  if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "host is in cluster"; else echo "without cluster"; fi 
+#  when: (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '6') or (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6') or (ansible_distribution == 'OracleLinux' and ansible_distribution_major_version == '6')
+#  register: cluster_state
   
-- name: cluster_state_RHEL/OEL_6
-  shell: /usr/sbin/clustat
-  ignore_errors: true
-  when: cluster_state.stdout == "host is in cluster" 
-  no_log: True
-  register: clustat
+#- name: cluster_state_RHEL/OEL_6
+#  shell: /usr/sbin/clustat
+#  ignore_errors: true
+#  when: cluster_state.stdout == "host is in cluster" 
+#  no_log: True
+#  register: clustat
 
-- name: result_of_clustat_RHEL/OEL_6
-  debug:
-    msg: "{{ clustat.stdout_lines }}"
-  ignore_errors: true
+#- name: result_of_clustat_RHEL/OEL_6
+#  debug:
+#    msg: "{{ clustat.stdout_lines }}"
+#  ignore_errors: true
 
 - name: cluster_state_RHEL7/8
   shell: KERNEL_NEW=$("/bin/systemctl status pcsd.service"); KERNEL_NOW=$(echo "Unit pcsd.service could not be found.");  if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "host is in cluster"; else echo "without cluster"; fi

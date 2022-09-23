@@ -2,19 +2,11 @@
 - import_tasks: preupdateOS_prod.yaml
   tags:
     - never
-    - update
-    - preupdate_check
-
-- import_tasks: preupdateOS_test.yaml
-  tags:
-    - never
-    - update
     - preupdate_check
 
 - import_tasks: virt_or_hard_host.yaml
   tags:
     - never
-    - update
     - preupdate_check
 
 - import_tasks: updateOS.yaml
@@ -30,11 +22,9 @@
 - import_tasks: check_OS_version.yaml
   tags:
     - never
-    - update
     - check_OS_version
 
 - import_tasks: check_kernel_version.yaml
   tags:
     - never
-    - update
     - check_kernel_version
