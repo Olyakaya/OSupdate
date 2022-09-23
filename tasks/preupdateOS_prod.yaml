@@ -16,7 +16,7 @@
 
 - name: free space at boot and "/"
   debug:
-    msg: "{{ rresult_space.stdout_lines }}"
+    msg: "{{ result_space.stdout_lines }}"
 
 #- name: check_if_cluster_RHEL/OEL_6
 #  shell: KERNEL_NEW=$(/sbin/service rgmanager status); KERNEL_NOW=$(echo "rgmanager:" "unrecognized service");  if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "host is in cluster"; else echo "without cluster"; fi 
