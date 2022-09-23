@@ -38,6 +38,11 @@
 #    msg: "{{ clustat.stdout_lines }}"
 #  ignore_errors: true
 
+- name: cluster_state_RHEL7/8
+  shell: KERNEL_NEW=$("/bin/systemctl status pcsd.service"); KERNEL_NOW=$(echo "Unit pcsd.service could not be found.");  if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "host is in cluster"; else echo "without cluster"; fi
+  when: (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '7') or (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '8') or (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7') or (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '8') or (ansible_distribution == 'OracleLinux' and ansible_distribution_major_version == '7')
+  register: cluster_state_RHEL7
+
 - name: clustat_RHEL7
   shell:  /usr/sbin/pcs
   ignore_errors: true
@@ -57,7 +62,7 @@
     state: absent
 
 - name: check subscription
-  shell: KERNEL_NEW=$(grep jarvis /etc/yum.repos.d/* |awk '{print $3}' | tail -n 1 |awk -F "/" '{print $3}'); KERNEL_NOW=pandora.sdab.sn; if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "resubscription needed"; else echo "subscription is correct"; fi 
+  shell: SUB_CURRENT=$(grep pandora /etc/yum.repos.d/* |awk '{print $3}' | tail -n 1 |awk -F "/" '{print $3}'); SUB_NEW=pandora.sdab.sn; if [[ $SUB_CURRENT != $SUB_NEW ]]; then echo "resubscription needed"; else echo "subscription is correct"; fi 
   register: sub_needed
   
  #- import_tasks: task_subscription_update_test.yml

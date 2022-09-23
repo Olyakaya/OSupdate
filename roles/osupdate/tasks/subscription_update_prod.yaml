@@ -19,13 +19,15 @@
 
 - name: remove katello-ca-consumer-jarvis packages
   shell: rpm -e katello-ca-consumer-jarvis.sdab.sn
-  register: old_katello_remove
+  ignore_errors: true
 
 - name: Download katello-ca-consumer-latest
   shell: 'curl https://pandora.sdab.sn/pub/katello-ca-consumer-latest.noarch.rpm -o katello-ca-consumer-latest.noarch.rpm -ks' 
+  ignore_errors: true
   
 - name: Update katello-ca-consumer
   shell: "rpm -Uvh ./katello-ca-consumer-latest.noarch.rpm"
+  ignore_errors: true
 
 #- name: register in jarvis RHEL6
 #  shell: 'subscription-manager register --org="lifecell" --activationkey="rhel6-prod" --force'

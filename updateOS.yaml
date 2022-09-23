@@ -1,6 +1,6 @@
 ---
-- hosts: frontend
+- hosts: "{{ srv }}"
   become: yes
   gather_facts: yes
   roles:
-    - role: OSUPDATE
+    - role: osupdate
