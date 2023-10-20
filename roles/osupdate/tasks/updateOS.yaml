@@ -25,10 +25,6 @@
   when: mv_result.stdout == ""
   notify: "Reboot host and wait for it to restart"
 
- #- name: display
- #  debug: 
-  #   msg: "{{ result }}"
-
 - name: turn back non OS repo
   shell: "mv /root/nonos_repo/* /etc/yum.repos.d/"
   ignore_errors: true
