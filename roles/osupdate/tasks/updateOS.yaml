@@ -13,12 +13,9 @@
     name: ntpd
     enabled: yes
   when: ansible_distribution_major_version != '8'
-
-- name: clean yum cash
-  command: "yum clean all"
     
 - name: install the latest OS version
-  yum:
+  package:
     name: "*"
     state: latest
     update_cache: yes
