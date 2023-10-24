@@ -4,7 +4,7 @@
     path: /root/nonos_repo
     state: directory
 
-- name: move non OS repos 
+- name: move non OS repos
   shell: "mv /etc/yum.repos.d/* /root/nonos_repo/ && mv /root/nonos_repo/redhat.repo /etc/yum.repos.d/"
   register: mv_result
 
@@ -13,24 +13,23 @@
     name: ntpd
     enabled: yes
   when: ansible_distribution_major_version != '8'
-    
+
 - name: install the latest OS version
-  package:
+  yum:
     name: "*"
     state: latest
     update_cache: yes
     skip_broken: yes
-   #exclude: <PACKAGE_NAME>
-   #register: result
+    #exclude: <PACKAGE_NAME>
+    #register: result
   when: mv_result.stdout == ""
   notify: "Reboot host and wait for it to restart"
 
 - name: turn back non OS repo
   shell: "mv /root/nonos_repo/* /etc/yum.repos.d/"
   ignore_errors: true
-  
+
 - name: remove /root/nonos_repo
   file:
     path: /root/nonos_repo/
     state: absent
- 
